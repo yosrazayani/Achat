@@ -5,7 +5,7 @@ pipeline {
             steps {
                 echo "Getting Project from Git"
                 git branch: "main",
-                    url: "https://github.com/yosrazayani/devops"
+                    url: "https://github.com/yosrazayani/Achat.git"
             }
         }
     stage('MAVEN') {
@@ -25,7 +25,7 @@ pipeline {
 
         stage("SONARQUBE") {
                     steps {
-                        dir('gestion-station-ski') {
+                        dir('Achat') {
                             sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=P@ssw0rd2"
                         }
                     }
@@ -33,7 +33,7 @@ pipeline {
 
        stage("MOCKITO") {
          steps {
-               dir('gestion-station-ski') {
+               dir('Achat') {
                     sh "mvn test -Dtest=tn.esprit.spring.services.SubscriptionServicesImplMock"
                 }
             }
@@ -43,7 +43,7 @@ pipeline {
 
         stage("MVN NEXUS") {
             steps {
-                dir('gestion-station-ski') {
+                dir('Achat') {
                     sh 'mvn deploy -DskipTests'
                 }
             }
@@ -52,7 +52,7 @@ pipeline {
         stage("BUILD DOCKER IMAGE") {
             steps {
                 sh 'git checkout main' // Switch to the main branch globally
-                dir('gestion-station-ski') {
+                dir('Achat') {
                     sh 'docker build -t khaznaji/oumaymalynakhaznaji-5sae4-g1-gestion-station-ski:latest .'
                 }
                 sh 'docker build -t khaznaji/test:latest -f Dockerfile .'
@@ -71,7 +71,7 @@ pipeline {
 
         stage('docker compose') {
             steps {
-                dir('gestion-station-ski') {
+                dir('Achat') {
                     sh 'docker compose down --rmi all'
                     sh 'docker compose up -d'
                 }
