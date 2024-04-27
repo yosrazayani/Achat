@@ -1,0 +1,97 @@
+pipeline {
+    agent any
+    stages {
+        stage("GIT") {
+            steps {
+                echo "Getting Project from Git"
+                git branch: "main",
+                    url: "https://github.com/yosrazayani/devops"
+            }
+        }
+    stage('MAVEN') {
+            steps {
+                sh "mvn -version"
+
+        }
+        }
+
+         stage('BUILD') {
+                    steps {
+                        sh "mvn clean -version"
+
+                }
+                }
+        stage('deploy Artifact') {
+            steps {
+                sh 'mvn deploy -DskipTests'
+
+            }
+        }
+        stage("MOCKITO") {
+            steps {
+                dir('gestion-station-ski') {
+                    sh "mvn test -Dtest=tn.esprit.spring.services.SubscriptionServicesImplMock"
+                }
+            }
+        }
+
+        stage("SONARQUBE") {
+            steps {
+                dir('gestion-station-ski') {
+                    sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=P@ssw0rd2"
+                }
+            }
+        }
+
+        stage("MVN NEXUS") {
+            steps {
+                dir('gestion-station-ski') {
+                    sh 'mvn deploy -DskipTests'
+                }
+            }
+        }
+
+        stage("BUILD DOCKER IMAGE") {
+            steps {
+                sh 'git checkout main' // Switch to the main branch globally
+                dir('gestion-station-ski') {
+                    sh 'docker build -t khaznaji/oumaymalynakhaznaji-5sae4-g1-gestion-station-ski:latest .'
+                }
+                sh 'docker build -t khaznaji/test:latest -f Dockerfile .'
+            }
+        }
+
+        stage('docker push') {
+            steps {
+                script {
+                    sh 'docker login -u "khaznaji" -p "191JFT2725" docker.io'
+                    sh 'docker push khaznaji/oumaymalynakhaznaji-5sae4-g1-gestion-station-ski:latest'
+                    sh 'docker push khaznaji/test:latest'
+                }
+            }
+        }
+
+        stage('docker compose') {
+            steps {
+                dir('gestion-station-ski') {
+                    sh 'docker compose down --rmi all'
+                    sh 'docker compose up -d'
+                }
+            }
+        }
+
+        // stage('MAIL BUILD') {
+        //     steps {
+        //         script {
+        //             currentBuildResult = currentBuild.result
+        //             emailext subject: "${currentBuildResult == 'SUCCESS' ? 'Build Successful' : 'Build Failed'}",
+        //                     body: "Le build a abouti avec le statut : ${currentBuildResult}",
+        //                     recipientProviders: [[$class: 'DevelopersRecipientProvider']],
+        //                     to: 'oumaymalyna.khaznaji@esprit.tn',
+        //                     from: 'oumaymalyna.khaznaji@esprit.tn',
+        //                     replyTo: 'oumaymalyna.khaznaji@esprit.tn'
+        //         }
+        //     }
+        // }
+    }
+}
