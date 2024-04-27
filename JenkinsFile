@@ -25,9 +25,10 @@ pipeline {
 
         stage("SONARQUBE") {
                     steps {
+withSonarQubeEnv('SonarQube') {
+                   sh 'mvn sonar:sonar'
 
-                            sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=P@ssw0rd2'
-
+}
                     }
                 }
 
