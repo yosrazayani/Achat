@@ -21,12 +21,7 @@ pipeline {
 
                 }
                 }
-        stage('deploy Artifact') {
-            steps {
-                sh 'mvn deploy -DskipTests'
 
-            }
-        }
 
         stage("SONARQUBE") {
                     steps {
