@@ -49,32 +49,14 @@ pipeline {
                 }
         }
 
-        stage("BUILD DOCKER IMAGE") {
-            steps {
-                sh 'git checkout main' // Switch to the main branch globally
-                dir('Achat') {
-                    sh 'docker build -t khaznaji/oumaymalynakhaznaji-5sae4-g1-gestion-station-ski:latest .'
-                }
-                sh 'docker build -t khaznaji/test:latest -f Dockerfile .'
-            }
-        }
 
-        stage('docker push') {
-            steps {
-                script {
-                    sh 'docker login -u "khaznaji" -p "191JFT2725" docker.io'
-                    sh 'docker push khaznaji/oumaymalynakhaznaji-5sae4-g1-gestion-station-ski:latest'
-                    sh 'docker push khaznaji/test:latest'
-                }
-            }
-        }
 
         stage('docker compose') {
             steps {
-                dir('Achat') {
+
                     sh 'docker compose down --rmi all'
                     sh 'docker compose up -d'
-                }
+
             }
         }
 
