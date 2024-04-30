@@ -48,7 +48,7 @@ pipeline {
         stage("NEXUS") {
             steps {
 
-                    sh 'mvn deploy'
+                    sh "mvn deploy -Dnexus.url=${env.NEXUS_URL} -Dnexus.username=${env.NEXUS_USERNAME} -Dnexus.password=${env.NEXUS_PASSWORD}"
                 }
         }
 
