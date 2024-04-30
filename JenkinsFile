@@ -35,7 +35,7 @@ pipeline {
        stage("MOCKITO") {
          steps {
 
-                    sh "mvn test -Dtest=tn.esprit.spring.services.SubscriptionServicesImplMock"
+                    sh 'mvn test'
 
             }
         }
