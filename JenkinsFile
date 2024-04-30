@@ -42,12 +42,11 @@ pipeline {
 
 
 
-        stage("MVN NEXUS") {
+        stage("NEXUS") {
             steps {
-                dir('Achat') {
-                    sh 'mvn deploy -DskipTests'
+
+                    sh 'mvn deploy'
                 }
-            }
         }
 
         stage("BUILD DOCKER IMAGE") {
