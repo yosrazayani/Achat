@@ -8,19 +8,16 @@ pipeline {
                     url: "https://github.com/yosrazayani/Achat.git"
             }
         }
-    stage('MAVEN') {
+    stage('MVN BUILD') {
             steps {
-                sh "mvn -version"
+                 sh 'mvn clean'
+                    sh 'mvn compile'
+                    sh 'mvn install'
 
         }
         }
 
-         stage('BUILD') {
-                    steps {
-                        sh "mvn clean -version"
 
-                }
-                }
 
 
         stage("SONARQUBE") {
