@@ -1,11 +1,6 @@
 pipeline {
     agent any
-    environment {
-            // Define any environment variables needed for the build or deployment
-            NEXUS_URL = 'http://172.17.0.1:8081' // Replace with your Nexus server URL
-            NEXUS_USERNAME = 'admin'
-            NEXUS_PASSWORD = 'P@ssw0r2' // Consider using credentials plugin for secrets
-        }
+
     stages {
         stage("GIT") {
             steps {
@@ -48,7 +43,7 @@ pipeline {
         stage("NEXUS") {
             steps {
 
-                    sh "mvn deploy -Dnexus.url=${env.NEXUS_URL} -Dnexus.username=${env.NEXUS_USERNAME} -Dnexus.password=${env.NEXUS_PASSWORD}"
+                    sh "mvn deploy"
                 }
         }
 
