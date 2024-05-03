@@ -47,16 +47,37 @@ pipeline {
                 }
         }
 
+stage('GRAFANA') {
+                    steps {
+                        script {
+                            def grafanaUrl = 'http://localhost:3000'
+                            sh "xdg-open ${grafanaUrl}"
+                        }
+                    }
+                 }
+
+        stage('DOCKER IMAGE'){
+                    steps {
+                        sh 'docker build -t yosrazayni2/achat:1.0.0 .'
+                    }
+                }
+
+                stage('DOCKER HUB') {
+                    steps {
+                        echo 'deploying docker image...';
+                        sh '''docker login -u yosrazayani2 -p docker789
+                              docker push yosrazayani2/achat:1.0.0'''
+                     }
+                 }
+
+                 stage('DOCKER-COMPOSE') {
+                    steps {
+                        echo 'composing docker image...';
+                        sh 'docker-compose up -d'
+                     }
+                 }
 
 
-        stage('docker compose') {
-            steps {
-
-                    sh 'docker compose down --rmi all'
-                    sh 'docker compose up -d'
-
-            }
-        }
 
         // stage('MAIL BUILD') {
         //     steps {
