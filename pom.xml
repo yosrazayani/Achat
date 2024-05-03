@@ -72,13 +72,7 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<distributionManagement>
-		<repository>
-			<id>Nexus</id>
-			<name>Nexus Repository</name>
-			<url>http://172.17.0.1:8081/repository/maven-releases/</url>
-		</repository>
-	</distributionManagement>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -128,5 +122,11 @@
 				</plugins>
 			</pluginManagement>
 	</build>
-
+	<distributionManagement>
+		<repository>
+			<id>Nexus</id>
+			<name>Nexus Repository</name>
+			<url>http://172.17.0.1:8081/repository/maven-releases/</url>
+		</repository>
+	</distributionManagement>
 </project>
