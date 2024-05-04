@@ -13,7 +13,7 @@ services:
       - db:/var/lib/mysql
 
   app-achat:
-    image: yosrazayani2/alpine:1.0.0
+    image: yosrazayani2/achat:1.0.0
     restart: on-failure
     ports:
       - "8082:8082"
