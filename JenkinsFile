@@ -47,14 +47,7 @@ pipeline {
                 }
         }
 
-stage('GRAFANA') {
-                    steps {
-                        script {
-                            def grafanaUrl = 'http://localhost:3000'
-                            sh "xdg-open ${grafanaUrl}"
-                        }
-                    }
-                 }
+
 
         stage('DOCKER IMAGE'){
                     steps {
@@ -76,6 +69,14 @@ stage('GRAFANA') {
                         sh 'docker-compose up -d'
                      }
                  }
+                 stage('GRAFANA') {
+                                     steps {
+                                         script {
+                                             def grafanaUrl = 'http://localhost:3000'
+                                             sh "xdg-open ${grafanaUrl}"
+                                         }
+                                     }
+                                  }
 
 
 
