@@ -58,7 +58,7 @@ pipeline {
                 stage('DOCKER HUB') {
                     steps {
                         echo 'deploying docker image...';
-                        sh '''docker login -u yosrazayani2 -p docker789
+                        sh '''docker login -u yosrazayani2 -p P@ssw0rd2
                               docker push yosrazayani2/achat:1.0.0'''
                      }
                  }
